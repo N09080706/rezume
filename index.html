@@ -613,49 +613,407 @@ button:hover{
                     <div class="side-content">
                         <div id="r_birth"></div>
                         <div id="r_address"></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium A4 Resume</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#e8edf3;
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+.container{
+    display:flex;
+    gap:20px;
+    max-width:1600px;
+    margin:auto;
+    align-items:flex-start;
+}
+
+.panel{
+    width:340px;
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.08);
+    position:sticky;
+    top:20px;
+}
+
+.panel h2{
+    margin-bottom:18px;
+    font-size:25px;
+}
+
+.panel label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:5px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.panel input,
+.panel textarea{
+    width:100%;
+    border:1px solid #d9e0e7;
+    border-radius:10px;
+    padding:10px;
+    font-size:13px;
+    outline:none;
+}
+
+.panel textarea{
+    resize:vertical;
+    min-height:70px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+button{
+    flex:1;
+    border:none;
+    padding:13px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.generate{
+    background:#111827;
+    color:white;
+}
+
+.pdf{
+    background:#2563eb;
+    color:white;
+}
+
+.resume-wrapper{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.resume{
+    width:210mm;
+    height:297mm;
+    background:white;
+    padding:18mm;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:18px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.08);
+}
+
+.left{
+    background:#111827;
+    color:white;
+    border-radius:18px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.photo{
+    width:120px;
+    height:120px;
+    border-radius:18px;
+    overflow:hidden;
+    margin:auto;
+    margin-bottom:15px;
+    background:#1f2937;
+}
+
+.photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.name{
+    font-size:24px;
+    font-weight:800;
+    text-align:center;
+    line-height:1.2;
+}
+
+.position{
+    text-align:center;
+    margin-top:6px;
+    color:#93c5fd;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.side-block{
+    margin-bottom:18px;
+}
+
+.side-title{
+    font-size:12px;
+    text-transform:uppercase;
+    font-weight:800;
+    margin-bottom:8px;
+    letter-spacing:1px;
+    color:#93c5fd;
+}
+
+.side-text{
+    font-size:11px;
+    line-height:1.6;
+    white-space:pre-line;
+}
+
+.lang{
+    margin-bottom:8px;
+}
+
+.lang-name{
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+.lang-bar{
+    width:100%;
+    height:5px;
+    background:#374151;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.lang-fill{
+    height:100%;
+    background:#60a5fa;
+}
+
+.right{
+    overflow:hidden;
+}
+
+.section{
+    margin-bottom:14px;
+}
+
+.section-title{
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:7px;
+    color:#111827;
+    border-bottom:2px solid #dbe4ee;
+    padding-bottom:5px;
+}
+
+.section-content{
+    font-size:11px;
+    line-height:1.55;
+    white-space:pre-line;
+    color:#1f2937;
+}
+
+.compact{
+    line-height:1.45;
+}
+
+@media print{
+
+    body{
+        background:white;
+        padding:0;
+    }
+
+    .panel{
+        display:none;
+    }
+
+    .resume{
+        box-shadow:none;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="panel">
+
+        <h2>Резюме</h2>
+
+        <label>Фото</label>
+        <input type="file" id="photoInput" accept="image/*">
+
+        <label>ФИО</label>
+        <input type="text" id="fullname">
+
+        <label>Должность</label>
+        <input type="text" id="position">
+
+        <label>Дата рождения</label>
+        <input type="text" id="birth">
+
+        <label>Адрес</label>
+        <input type="text" id="address">
+
+        <label>Телефон</label>
+        <input type="text" id="phone">
+
+        <label>Email</label>
+        <input type="text" id="email">
+
+        <label>Опыт работы</label>
+        <textarea id="experience"></textarea>
+
+        <label>Образование</label>
+        <textarea id="education"></textarea>
+
+        <label>Доп. образование</label>
+        <textarea id="extraedu"></textarea>
+
+        <label>Навыки</label>
+        <textarea id="skills"></textarea>
+
+        <label>Языки</label>
+        <textarea id="languages"
+placeholder="Русский — 100%
+Английский — 70%"></textarea>
+
+        <label>Личные качества</label>
+        <textarea id="qualities"></textarea>
+
+        <div class="buttons">
+            <button class="generate"
+onclick="generateResume()">
+                Обновить
+            </button>
+
+            <button class="pdf"
+onclick="downloadPDF()">
+                PDF
+            </button>
+        </div>
+
+    </div>
+
+    <div class="resume-wrapper">
+
+        <div class="resume" id="resume">
+
+            <div class="left">
+
+                <div class="photo">
+                    <img id="previewPhoto">
+                </div>
+
+                <div class="name"
+id="r_name"></div>
+
+                <div class="position"
+id="r_position"></div>
+
+                <div class="side-block">
+
+                    <div class="side-title">
+                        Контакты
+                    </div>
+
+                    <div class="side-text">
+                        <div id="r_birth"></div>
+                        <div id="r_address"></div>
                         <div id="r_phone"></div>
                         <div id="r_email"></div>
                     </div>
+
                 </div>
 
-                <div class="side-section">
-                    <div class="side-title">Навыки</div>
+                <div class="side-block">
 
-                    <div class="side-content" id="r_skills"></div>
+                    <div class="side-title">
+                        Навыки
+                    </div>
+
+                    <div class="side-text"
+id="r_skills"></div>
+
                 </div>
 
-                <div class="side-section">
-                    <div class="side-title">Языки</div>
+                <div class="side-block">
+
+                    <div class="side-title">
+                        Языки
+                    </div>
 
                     <div id="languageContainer"></div>
+
                 </div>
 
-                <div class="side-section">
-                    <div class="side-title">Личные качества</div>
+                <div class="side-block">
 
-                    <div class="side-content" id="r_qualities"></div>
+                    <div class="side-title">
+                        Качества
+                    </div>
+
+                    <div class="side-text"
+id="r_qualities"></div>
+
                 </div>
 
             </div>
 
-            <div class="main">
+            <div class="right">
 
                 <div class="section">
-                    <div class="section-title">Опыт работы</div>
 
-                    <div class="content" id="r_experience"></div>
+                    <div class="section-title">
+                        Опыт работы
+                    </div>
+
+                    <div class="section-content compact"
+id="r_experience"></div>
+
                 </div>
 
                 <div class="section">
-                    <div class="section-title">Образование</div>
 
-                    <div class="content" id="r_education"></div>
+                    <div class="section-title">
+                        Образование
+                    </div>
+
+                    <div class="section-content"
+id="r_education"></div>
+
                 </div>
 
                 <div class="section">
-                    <div class="section-title">Дополнительное образование</div>
 
-                    <div class="content" id="r_extraedu"></div>
+                    <div class="section-title">
+                        Дополнительное образование
+                    </div>
+
+                    <div class="section-content"
+id="r_extraedu"></div>
+
                 </div>
 
             </div>
@@ -668,7 +1026,8 @@ button:hover{
 
 <script>
 
-document.getElementById('photoInput').addEventListener('change', function(e){
+document.getElementById('photoInput')
+.addEventListener('change', function(e){
 
     const file = e.target.files[0];
 
@@ -677,8 +1036,10 @@ document.getElementById('photoInput').addEventListener('change', function(e){
         const reader = new FileReader();
 
         reader.onload = function(event){
-            document.getElementById('previewPhoto').src =
-                event.target.result;
+
+            document.getElementById('previewPhoto')
+            .src = event.target.result;
+
         }
 
         reader.readAsDataURL(file);
@@ -748,26 +1109,33 @@ function generateLanguages(){
 
             if(parts.length >= 2){
 
-                const lang = parts[0].trim();
+                const lang =
+                    parts[0].trim();
+
                 const percent =
                     parseInt(parts[1]);
 
-                const block = document.createElement('div');
+                const div =
+                    document.createElement('div');
 
-                block.className = 'language-item';
+                div.className = 'lang';
 
-                block.innerHTML = `
-                    <div style="font-size:13px; margin-bottom:3px;">
+                div.innerHTML = `
+
+                    <div class="lang-name">
                         ${lang}
                     </div>
 
-                    <div class="language-bar">
-                        <div class="language-fill"
-                        style="width:${percent}%"></div>
+                    <div class="lang-bar">
+                        <div class="lang-fill"
+                        style="width:${percent}%">
+                        </div>
                     </div>
+
                 `;
 
-                container.appendChild(block);
+                container.appendChild(div);
+
             }
 
         }
