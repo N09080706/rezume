@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume Builder</title>
+<title>Resume Builder</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -17,29 +17,22 @@
 
 body{
     background:#e9edf2;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     padding:20px;
     color:#222;
 }
 
-.container{
+.wrapper{
     max-width:1400px;
     margin:auto;
-    display:flex;
-    gap:20px;
-    align-items:flex-start;
 }
 
 .panel{
-    width:360px;
     background:white;
     padding:20px;
     border-radius:14px;
     box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    position:sticky;
-    top:20px;
-    max-height:95vh;
-    overflow:auto;
+    margin-bottom:20px;
 }
 
 .panel h2{
@@ -47,27 +40,37 @@ body{
     font-size:24px;
 }
 
-.panel label{
-    font-size:13px;
-    font-weight:bold;
-    display:block;
-    margin-bottom:5px;
-    margin-top:14px;
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.panel input,
-.panel textarea{
+.full{
+    grid-column:1 / -1;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+input,
+textarea{
     width:100%;
     border:1px solid #d8dce3;
     border-radius:8px;
     padding:10px;
     font-size:14px;
     outline:none;
+    font-family:Arial,sans-serif;
 }
 
-.panel textarea{
+textarea{
     resize:vertical;
-    min-height:80px;
+    min-height:90px;
 }
 
 .buttons{
@@ -77,9 +80,8 @@ body{
 }
 
 button{
-    flex:1;
     border:none;
-    padding:13px;
+    padding:13px 20px;
     border-radius:10px;
     cursor:pointer;
     font-size:15px;
@@ -97,7 +99,6 @@ button{
 }
 
 .resume-wrapper{
-    flex:1;
     display:flex;
     justify-content:center;
 }
@@ -108,7 +109,6 @@ button{
     background:white;
     padding:28px;
     box-shadow:0 10px 40px rgba(0,0,0,0.08);
-    overflow:hidden;
 }
 
 .top{
@@ -229,7 +229,6 @@ button{
 
     .resume{
         box-shadow:none;
-        margin:0;
     }
 
 }
@@ -238,69 +237,149 @@ button{
 </head>
 <body>
 
-<div class="container">
+<div class="wrapper">
+
+    <!-- ФОРМА -->
 
     <div class="panel">
 
-        <h2>Создание резюме</h2>
+        <h2>Заполнение резюме</h2>
 
-        <label>Фото</label>
-        <input type="file" id="photoInput" accept="image/*">
+        <div class="form-grid">
 
-        <label>ФИО</label>
-        <input type="text" id="fullname">
+            <div class="full">
 
-        <label>Желаемая должность</label>
-        <input type="text" id="position">
+                <label>Фото</label>
 
-        <label>Дата рождения</label>
-        <input type="text" id="birth">
+                <input type="file"
+id="photoInput"
+accept="image/*">
 
-        <label>Адрес</label>
-        <input type="text" id="address">
+            </div>
 
-        <label>Телефон</label>
-        <input type="text" id="phone">
+            <div>
 
-        <label>Email</label>
-        <input type="text" id="email">
+                <label>ФИО</label>
 
-        <label>Опыт работы</label>
-        <textarea id="experience"></textarea>
+                <input type="text"
+id="fullname">
 
-        <label>Образование</label>
-        <textarea id="education"></textarea>
+            </div>
 
-        <label>Дополнительное образование</label>
-        <textarea id="extraedu"></textarea>
+            <div>
 
-        <label>Навыки</label>
-        <textarea id="skills"></textarea>
+                <label>Должность</label>
 
-        <label>Языки</label>
-        <textarea id="languages"
+                <input type="text"
+id="position">
+
+            </div>
+
+            <div>
+
+                <label>Дата рождения</label>
+
+                <input type="text"
+id="birth">
+
+            </div>
+
+            <div>
+
+                <label>Телефон</label>
+
+                <input type="text"
+id="phone">
+
+            </div>
+
+            <div class="full">
+
+                <label>Адрес</label>
+
+                <input type="text"
+id="address">
+
+            </div>
+
+            <div class="full">
+
+                <label>Email</label>
+
+                <input type="text"
+id="email">
+
+            </div>
+
+            <div class="full">
+
+                <label>Опыт работы</label>
+
+                <textarea id="experience"></textarea>
+
+            </div>
+
+            <div>
+
+                <label>Образование</label>
+
+                <textarea id="education"></textarea>
+
+            </div>
+
+            <div>
+
+                <label>Доп. образование</label>
+
+                <textarea id="extraedu"></textarea>
+
+            </div>
+
+            <div>
+
+                <label>Навыки</label>
+
+                <textarea id="skills"></textarea>
+
+            </div>
+
+            <div>
+
+                <label>Языки</label>
+
+                <textarea id="languages"
 placeholder="Русский — 100%
-Английский — 70%
-Таджикский — 95%"></textarea>
+Английский — 70%"></textarea>
 
-        <label>Личные качества</label>
-        <textarea id="qualities"></textarea>
+            </div>
+
+            <div class="full">
+
+                <label>Личные качества</label>
+
+                <textarea id="qualities"></textarea>
+
+            </div>
+
+        </div>
 
         <div class="buttons">
 
             <button class="generate"
 onclick="generateResume()">
-                Обновить
+                Обновить резюме
             </button>
 
             <button class="pdf"
 onclick="downloadPDF()">
-                PDF
+                Скачать PDF
             </button>
 
         </div>
 
     </div>
+
+    <!-- РЕЗУЛЬТАТ -->
 
     <div class="resume-wrapper">
 
@@ -329,11 +408,8 @@ id="r_position"></div>
                 <div class="contacts">
 
                     <div id="r_birth"></div>
-
                     <div id="r_address"></div>
-
                     <div id="r_phone"></div>
-
                     <div id="r_email"></div>
 
                 </div>
@@ -496,6 +572,7 @@ function generateResume(){
         document.getElementById('qualities').value;
 
     generateLanguages();
+
 }
 
 function generateLanguages(){
