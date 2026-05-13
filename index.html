@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume Builder</title>
+<title>CV Builder</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -16,36 +16,36 @@
 }
 
 body{
-    background:#dfe5ec;
+    background:#d9e1ea;
     font-family:Arial,sans-serif;
     padding:30px;
 }
 
-.resume{
+.editor{
     width:210mm;
     min-height:297mm;
-    background:white;
     margin:auto;
+    background:white;
     display:grid;
-    grid-template-columns:260px 1fr;
+    grid-template-columns:250px 1fr;
     overflow:hidden;
     box-shadow:0 15px 50px rgba(0,0,0,0.1);
 }
 
 .left{
-    background:#111827;
+    background:#0f172a;
     color:white;
-    padding:25px;
+    padding:24px;
 }
 
 .photo{
-    width:130px;
-    height:130px;
-    border-radius:20px;
+    width:125px;
+    height:125px;
+    border-radius:18px;
     overflow:hidden;
-    background:#1f2937;
     margin:auto;
     margin-bottom:18px;
+    background:#1e293b;
     cursor:pointer;
     position:relative;
 }
@@ -57,44 +57,45 @@ body{
 }
 
 .photo::after{
-    content:"Фото";
+    content:"Добавить фото";
     position:absolute;
     inset:0;
+    background:rgba(0,0,0,0.45);
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(0,0,0,0.45);
+    font-size:12px;
     opacity:0;
     transition:0.2s;
-    font-size:13px;
 }
 
 .photo:hover::after{
     opacity:1;
 }
 
-.name{
+input,
+textarea{
     width:100%;
-    background:transparent;
     border:none;
     outline:none;
+    background:transparent;
+    resize:none;
+    font-family:Arial,sans-serif;
+}
+
+.name{
     color:white;
     font-size:24px;
     font-weight:800;
     text-align:center;
-    line-height:1.2;
     margin-bottom:8px;
 }
 
-.position{
-    width:100%;
-    background:transparent;
-    border:none;
-    outline:none;
+.job{
     color:#93c5fd;
     text-align:center;
     font-size:14px;
-    margin-bottom:25px;
+    margin-bottom:24px;
 }
 
 .block{
@@ -102,76 +103,59 @@ body{
 }
 
 .title{
-    font-size:12px;
-    text-transform:uppercase;
-    font-weight:800;
     color:#93c5fd;
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
     margin-bottom:8px;
     border-bottom:1px solid rgba(255,255,255,0.15);
     padding-bottom:5px;
-    letter-spacing:1px;
 }
 
 .left textarea,
 .left input{
-    width:100%;
-    background:transparent;
-    border:none;
-    outline:none;
     color:white;
-    resize:none;
     font-size:11px;
     line-height:1.6;
 }
 
 .right{
-    padding:30px;
+    padding:28px;
 }
 
 .section{
-    margin-bottom:22px;
+    margin-bottom:18px;
 }
 
 .section-title{
     font-size:15px;
     font-weight:800;
     color:#111827;
+    margin-bottom:10px;
     border-bottom:2px solid #e5e7eb;
     padding-bottom:6px;
-    margin-bottom:10px;
     text-transform:uppercase;
 }
 
 .right textarea{
-    width:100%;
-    border:none;
-    outline:none;
-    resize:none;
     font-size:11px;
     line-height:1.6;
     color:#1f2937;
 }
 
-.languages{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+.lang{
+    margin-bottom:10px;
 }
 
 .lang input{
-    width:100%;
-    background:transparent;
-    border:none;
-    outline:none;
-    color:white;
-    font-size:11px;
-    margin-bottom:4px;
+    margin-bottom:5px;
 }
 
 .bar{
     width:100%;
     height:5px;
-    background:#374151;
+    background:#334155;
     border-radius:20px;
     overflow:hidden;
 }
@@ -199,7 +183,7 @@ button{
 }
 
 .add{
-    background:#111827;
+    background:#0f172a;
     color:white;
 }
 
@@ -219,7 +203,7 @@ button{
         display:none;
     }
 
-    .resume{
+    .editor{
         box-shadow:none;
     }
 
@@ -229,23 +213,26 @@ button{
 </head>
 <body>
 
-<div class="resume" id="resume">
+<div class="editor" id="resume">
 
     <div class="left">
 
         <label class="photo">
+
             <img id="photoPreview">
+
             <input type="file"
                    id="photoInput"
                    accept="image/*"
                    hidden>
+
         </label>
 
         <input class="name"
-               placeholder="ФИО">
+placeholder="ФИО">
 
-        <input class="position"
-               placeholder="Должность">
+        <input class="job"
+placeholder="Должность">
 
         <div class="block">
 
@@ -253,7 +240,7 @@ button{
                 Контакты
             </div>
 
-            <textarea rows="6"
+            <textarea rows="7"
 placeholder="Дата рождения
 Адрес
 Телефон
@@ -267,11 +254,11 @@ Email"></textarea>
                 Навыки
             </div>
 
-            <textarea rows="7"
+            <textarea rows="8"
 placeholder="HTML
 CSS
 JavaScript
-Photoshop"></textarea>
+Figma"></textarea>
 
         </div>
 
@@ -281,11 +268,12 @@ Photoshop"></textarea>
                 Языки
             </div>
 
-            <div class="languages" id="languages">
+            <div id="languages">
 
                 <div class="lang">
 
-                    <input placeholder="Русский — 100">
+                    <input placeholder="Русский — 100"
+oninput="updateBar(this)">
 
                     <div class="bar">
                         <div class="fill"
@@ -304,7 +292,7 @@ style="width:100%"></div>
                 Качества
             </div>
 
-            <textarea rows="5"
+            <textarea rows="6"
 placeholder="Ответственность
 Коммуникабельность"></textarea>
 
@@ -320,12 +308,13 @@ placeholder="Ответственность
                 Опыт работы
             </div>
 
-            <textarea rows="18"
+            <textarea rows="19"
 placeholder="2020 — 2025
 Компания
 Должность
 
-Обязанности..."></textarea>
+• Обязанности
+• Обязанности"></textarea>
 
         </div>
 
@@ -335,7 +324,7 @@ placeholder="2020 — 2025
                 Образование
             </div>
 
-            <textarea rows="7"
+            <textarea rows="8"
 placeholder="2015 — 2020
 Университет
 Специальность"></textarea>
@@ -424,30 +413,19 @@ function addLanguage(){
 
 function updateBar(input){
 
-    const value =
-        parseInt(input.value.match(/\d+/));
+    const match =
+        input.value.match(/\d+/);
 
-    if(!isNaN(value)){
+    if(match){
 
         input.parentElement
         .querySelector('.fill')
-        .style.width = value + '%';
+        .style.width =
+        match[0] + '%';
 
     }
 
 }
-
-document.querySelectorAll('.lang input')
-.forEach(input => {
-
-    input.addEventListener('input',
-    function(){
-
-        updateBar(this);
-
-    });
-
-});
 
 function downloadPDF(){
 
