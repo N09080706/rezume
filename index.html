@@ -1,230 +1,362 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Резюме PDF</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Resume Builder</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#e9edf2;
+    font-family:Arial, sans-serif;
+    padding:20px;
+    color:#222;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.panel{
+    width:360px;
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    position:sticky;
+    top:20px;
+}
+
+.panel h2{
+    margin-bottom:20px;
+    font-size:24px;
+}
+
+.panel label{
+    font-size:13px;
+    font-weight:bold;
+    display:block;
+    margin-bottom:5px;
+    margin-top:14px;
+}
+
+.panel input,
+.panel textarea{
+    width:100%;
+    border:1px solid #d8dce3;
+    border-radius:8px;
+    padding:10px;
+    font-size:14px;
+    resize:vertical;
+    outline:none;
+}
+
+.panel textarea{
+    min-height:80px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+button{
+    flex:1;
+    border:none;
+    padding:13px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+.generate{
+    background:#0f172a;
+    color:white;
+}
+
+.pdf{
+    background:#2563eb;
+    color:white;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.resume-wrapper{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.resume{
+    width:210mm;
+    min-height:297mm;
+    background:white;
+    padding:28px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    border-bottom:3px solid #0f172a;
+    padding-bottom:18px;
+    margin-bottom:20px;
+}
+
+.left-top{
+    flex:1;
+}
+
+.name{
+    font-size:34px;
+    font-weight:800;
+    line-height:1.1;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.position{
+    font-size:18px;
+    color:#2563eb;
+    font-weight:bold;
+}
+
+.contacts{
+    text-align:right;
+    font-size:14px;
+    line-height:1.8;
+}
+
+.section{
+    margin-bottom:18px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:10px;
+    text-transform:uppercase;
+    border-left:5px solid #2563eb;
+    padding-left:10px;
+}
+
+.content{
+    font-size:14px;
+    line-height:1.5;
+    white-space:pre-line;
+}
+
+.two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.skills-box{
+    background:#f4f7fb;
+    padding:12px;
+    border-radius:10px;
+}
+
+@media print{
+
     body{
-        margin:0;
-        padding:20px;
-        background:#f2f2f2;
-        font-family: Arial, sans-serif;
-    }
-
-    .controls{
-        max-width:900px;
-        margin:auto;
         background:white;
-        padding:20px;
-        border-radius:10px;
-        margin-bottom:20px;
-        box-shadow:0 0 10px rgba(0,0,0,0.1);
+        padding:0;
     }
 
-    .controls input,
-    .controls textarea{
-        width:100%;
-        padding:10px;
-        margin-top:5px;
-        margin-bottom:15px;
-        border:1px solid #ccc;
-        border-radius:5px;
-        font-size:14px;
-        box-sizing:border-box;
-    }
-
-    .controls button{
-        background:#1f6feb;
-        color:white;
-        border:none;
-        padding:12px 20px;
-        border-radius:6px;
-        cursor:pointer;
-        font-size:16px;
+    .panel{
+        display:none;
     }
 
     .resume{
-        width:850px;
-        margin:auto;
-        background:white;
-        padding:50px;
-        color:#000;
-        line-height:1.6;
+        box-shadow:none;
+        margin:0;
     }
 
-    h1{
-        font-size:28px;
-        margin-bottom:10px;
-    }
+}
 
-    .section-title{
-        font-weight:bold;
-        margin-top:25px;
-        margin-bottom:10px;
-        font-size:20px;
-    }
-
-    .job{
-        margin-bottom:20px;
-    }
-
-    ul{
-        margin-top:5px;
-    }
-
-    @media print{
-        body{
-            background:white;
-        }
-
-        .controls{
-            display:none;
-        }
-    }
 </style>
 </head>
 <body>
 
-<div class="controls">
-    <h2>Заполнение резюме</h2>
+<div class="container">
 
-    <label>ФИО</label>
-    <input type="text" id="fullname" value="Рустамов Саид Мирзоевич">
+    <div class="panel">
 
-    <label>Дата рождения</label>
-    <input type="text" id="birth" value="15.04.1981">
+        <h2>Создание резюме</h2>
 
-    <label>Адрес</label>
-    <input type="text" id="address" value="г. Душанбе, пр. Рудаки 90, кв. 49">
+        <label>ФИО</label>
+        <input type="text" id="fullname" placeholder="Введите ФИО">
 
-    <label>Телефон</label>
-    <input type="text" id="phone" value="+992 (90) 000 00 00">
+        <label>Желаемая должность</label>
+        <input type="text" id="position" placeholder="Например: Frontend Developer">
 
-    <label>Email</label>
-    <input type="text" id="email" value="mail@mail.ru">
+        <label>Дата рождения</label>
+        <input type="text" id="birth" placeholder="15.04.2000">
 
-    <label>Опыт работы</label>
-    <textarea id="experience" rows="10">
-Октябрь 2010 — наст. время
-ОАО «Пахтабанк»
-Должность: бухгалтер-кассир
+        <label>Адрес</label>
+        <input type="text" id="address" placeholder="г. Душанбе">
 
-Обязанности:
-• операционно-кассовое обслуживание юридических и физических лиц;
-• проведение валютно-обменных операций;
-• работа с пластиковыми картами;
-• прием коммунальных платежей;
-• осуществление денежных переводов;
-• ведение кассовой документации;
-• кассовая отчетность.
+        <label>Телефон</label>
+        <input type="text" id="phone" placeholder="+992 00 000 00 00">
 
-Сентябрь 2008 — октябрь 2010
-ЗАО «Зур Капитал»
+        <label>Email</label>
+        <input type="text" id="email" placeholder="mail@mail.com">
 
-Должность: Офис-менеджер
+        <label>Опыт работы</label>
+        <textarea id="experience" placeholder="Введите опыт работы"></textarea>
 
-Обязанности:
-• работа с документами;
-• выполнение поручений руководства.
-    </textarea>
+        <label>Образование</label>
+        <textarea id="education" placeholder="Введите образование"></textarea>
 
-    <label>Образование</label>
-    <textarea id="education" rows="5">
-2003 — 2008
-Таджикский Национальный университет,
-факультет экономики и управления,
-специальность «Бухгалтерский учет и аудит»
-    </textarea>
+        <label>Дополнительное образование</label>
+        <textarea id="extraedu" placeholder="Введите дополнительные курсы"></textarea>
 
-    <label>Дополнительное образование</label>
-    <textarea id="extraedu" rows="4">
-Октябрь 2019
-Курсы бухгалтерского учета в Образовательном центре.
-    </textarea>
+        <label>Навыки</label>
+        <textarea id="skills" placeholder="Введите навыки"></textarea>
 
-    <label>Профессиональные навыки</label>
-    <textarea id="skills" rows="4">
-уверенный пользователь ПК, высокая скорость печати, хорошее знание положений и инструкций НБТ РТ.
-    </textarea>
+        <label>Личные качества</label>
+        <textarea id="qualities" placeholder="Введите качества"></textarea>
 
-    <label>Личные качества</label>
-    <textarea id="qualities" rows="4">
-ответственность, исполнительность, честность, порядочность, быстрая обучаемость.
-    </textarea>
+        <div class="buttons">
+            <button class="generate" onclick="generateResume()">
+                Обновить
+            </button>
 
-    <button onclick="updateResume()">Обновить резюме</button>
-    <button onclick="downloadPDF()">Скачать PDF</button>
-</div>
+            <button class="pdf" onclick="downloadPDF()">
+                PDF
+            </button>
+        </div>
 
-<div class="resume" id="resume">
-
-    <h1 id="r_fullname">Рустамов Саид Мирзоевич</h1>
-
-    <div>
-        Дата рождения: <span id="r_birth">15.04.1981</span><br>
-        Адрес проживания: <span id="r_address">г. Душанбе, пр. Рудаки 90, кв. 49</span><br>
-        Телефон: <span id="r_phone">+992 (90) 000 00 00</span><br>
-        e-mail: <span id="r_email">mail@mail.ru</span>
     </div>
 
-    <div class="section-title">Опыт работы:</div>
-    <div id="r_experience"></div>
+    <div class="resume-wrapper">
 
-    <div class="section-title">Образование:</div>
-    <div id="r_education"></div>
+        <div class="resume" id="resume">
 
-    <div class="section-title">Дополнительное образование:</div>
-    <div id="r_extraedu"></div>
+            <div class="top">
 
-    <div class="section-title">Профессиональные навыки:</div>
-    <div id="r_skills"></div>
+                <div class="left-top">
+                    <div class="name" id="r_name"></div>
+                    <div class="position" id="r_position"></div>
+                </div>
 
-    <div class="section-title">Личные качества:</div>
-    <div id="r_qualities"></div>
+                <div class="contacts">
+                    <div id="r_birth"></div>
+                    <div id="r_address"></div>
+                    <div id="r_phone"></div>
+                    <div id="r_email"></div>
+                </div>
+
+            </div>
+
+            <div class="section">
+                <div class="section-title">Опыт работы</div>
+                <div class="content" id="r_experience"></div>
+            </div>
+
+            <div class="two-col">
+
+                <div>
+
+                    <div class="section">
+                        <div class="section-title">Образование</div>
+                        <div class="content" id="r_education"></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Доп. образование</div>
+                        <div class="content" id="r_extraedu"></div>
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="section">
+                        <div class="section-title">Навыки</div>
+
+                        <div class="skills-box">
+                            <div class="content" id="r_skills"></div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Личные качества</div>
+
+                        <div class="skills-box">
+                            <div class="content" id="r_qualities"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script>
 
-function nl2br(text){
-    return text.replace(/\n/g, "<br>");
-}
+function generateResume(){
 
-function updateResume(){
+    document.getElementById('r_name').innerText =
+        document.getElementById('fullname').value;
 
-    document.getElementById("r_fullname").innerHTML =
-        document.getElementById("fullname").value;
+    document.getElementById('r_position').innerText =
+        document.getElementById('position').value;
 
-    document.getElementById("r_birth").innerHTML =
-        document.getElementById("birth").value;
+    document.getElementById('r_birth').innerText =
+        "Дата рождения: " + document.getElementById('birth').value;
 
-    document.getElementById("r_address").innerHTML =
-        document.getElementById("address").value;
+    document.getElementById('r_address').innerText =
+        "Адрес: " + document.getElementById('address').value;
 
-    document.getElementById("r_phone").innerHTML =
-        document.getElementById("phone").value;
+    document.getElementById('r_phone').innerText =
+        "Телефон: " + document.getElementById('phone').value;
 
-    document.getElementById("r_email").innerHTML =
-        document.getElementById("email").value;
+    document.getElementById('r_email').innerText =
+        "Email: " + document.getElementById('email').value;
 
-    document.getElementById("r_experience").innerHTML =
-        nl2br(document.getElementById("experience").value);
+    document.getElementById('r_experience').innerText =
+        document.getElementById('experience').value;
 
-    document.getElementById("r_education").innerHTML =
-        nl2br(document.getElementById("education").value);
+    document.getElementById('r_education').innerText =
+        document.getElementById('education').value;
 
-    document.getElementById("r_extraedu").innerHTML =
-        nl2br(document.getElementById("extraedu").value);
+    document.getElementById('r_extraedu').innerText =
+        document.getElementById('extraedu').value;
 
-    document.getElementById("r_skills").innerHTML =
-        nl2br(document.getElementById("skills").value);
+    document.getElementById('r_skills').innerText =
+        document.getElementById('skills').value;
 
-    document.getElementById("r_qualities").innerHTML =
-        nl2br(document.getElementById("qualities").value);
+    document.getElementById('r_qualities').innerText =
+        document.getElementById('qualities').value;
 }
 
 function downloadPDF(){
@@ -232,21 +364,21 @@ function downloadPDF(){
     const element = document.getElementById("resume");
 
     const options = {
-        margin: 0,
-        filename: 'resume.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait'
+        margin:0,
+        filename:'resume.pdf',
+        image:{ type:'jpeg', quality:1 },
+        html2canvas:{
+            scale:2
+        },
+        jsPDF:{
+            unit:'mm',
+            format:'a4',
+            orientation:'portrait'
         }
     };
 
     html2pdf().set(options).from(element).save();
 }
-
-updateResume();
 
 </script>
 
