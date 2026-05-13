@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Резюме PDF</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+    body{
+        margin:0;
+        padding:20px;
+        background:#f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+
+    .controls{
+        max-width:900px;
+        margin:auto;
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        margin-bottom:20px;
+        box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .controls input,
+    .controls textarea{
+        width:100%;
+        padding:10px;
+        margin-top:5px;
+        margin-bottom:15px;
+        border:1px solid #ccc;
+        border-radius:5px;
+        font-size:14px;
+        box-sizing:border-box;
+    }
+
+    .controls button{
+        background:#1f6feb;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:6px;
+        cursor:pointer;
+        font-size:16px;
+    }
+
+    .resume{
+        width:850px;
+        margin:auto;
+        background:white;
+        padding:50px;
+        color:#000;
+        line-height:1.6;
+    }
+
+    h1{
+        font-size:28px;
+        margin-bottom:10px;
+    }
+
+    .section-title{
+        font-weight:bold;
+        margin-top:25px;
+        margin-bottom:10px;
+        font-size:20px;
+    }
+
+    .job{
+        margin-bottom:20px;
+    }
+
+    ul{
+        margin-top:5px;
+    }
+
+    @media print{
+        body{
+            background:white;
+        }
+
+        .controls{
+            display:none;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="controls">
+    <h2>Заполнение резюме</h2>
+
+    <label>ФИО</label>
+    <input type="text" id="fullname" value="Рустамов Саид Мирзоевич">
+
+    <label>Дата рождения</label>
+    <input type="text" id="birth" value="15.04.1981">
+
+    <label>Адрес</label>
+    <input type="text" id="address" value="г. Душанбе, пр. Рудаки 90, кв. 49">
+
+    <label>Телефон</label>
+    <input type="text" id="phone" value="+992 (90) 000 00 00">
+
+    <label>Email</label>
+    <input type="text" id="email" value="mail@mail.ru">
+
+    <label>Опыт работы</label>
+    <textarea id="experience" rows="10">
+Октябрь 2010 — наст. время
+ОАО «Пахтабанк»
+Должность: бухгалтер-кассир
+
+Обязанности:
+• операционно-кассовое обслуживание юридических и физических лиц;
+• проведение валютно-обменных операций;
+• работа с пластиковыми картами;
+• прием коммунальных платежей;
+• осуществление денежных переводов;
+• ведение кассовой документации;
+• кассовая отчетность.
+
+Сентябрь 2008 — октябрь 2010
+ЗАО «Зур Капитал»
+
+Должность: Офис-менеджер
+
+Обязанности:
+• работа с документами;
+• выполнение поручений руководства.
+    </textarea>
+
+    <label>Образование</label>
+    <textarea id="education" rows="5">
+2003 — 2008
+Таджикский Национальный университет,
+факультет экономики и управления,
+специальность «Бухгалтерский учет и аудит»
+    </textarea>
+
+    <label>Дополнительное образование</label>
+    <textarea id="extraedu" rows="4">
+Октябрь 2019
+Курсы бухгалтерского учета в Образовательном центре.
+    </textarea>
+
+    <label>Профессиональные навыки</label>
+    <textarea id="skills" rows="4">
+уверенный пользователь ПК, высокая скорость печати, хорошее знание положений и инструкций НБТ РТ.
+    </textarea>
+
+    <label>Личные качества</label>
+    <textarea id="qualities" rows="4">
+ответственность, исполнительность, честность, порядочность, быстрая обучаемость.
+    </textarea>
+
+    <button onclick="updateResume()">Обновить резюме</button>
+    <button onclick="downloadPDF()">Скачать PDF</button>
+</div>
+
+<div class="resume" id="resume">
+
+    <h1 id="r_fullname">Рустамов Саид Мирзоевич</h1>
+
+    <div>
+        Дата рождения: <span id="r_birth">15.04.1981</span><br>
+        Адрес проживания: <span id="r_address">г. Душанбе, пр. Рудаки 90, кв. 49</span><br>
+        Телефон: <span id="r_phone">+992 (90) 000 00 00</span><br>
+        e-mail: <span id="r_email">mail@mail.ru</span>
+    </div>
+
+    <div class="section-title">Опыт работы:</div>
+    <div id="r_experience"></div>
+
+    <div class="section-title">Образование:</div>
+    <div id="r_education"></div>
+
+    <div class="section-title">Дополнительное образование:</div>
+    <div id="r_extraedu"></div>
+
+    <div class="section-title">Профессиональные навыки:</div>
+    <div id="r_skills"></div>
+
+    <div class="section-title">Личные качества:</div>
+    <div id="r_qualities"></div>
+
+</div>
+
+<script>
+
+function nl2br(text){
+    return text.replace(/\n/g, "<br>");
+}
+
+function updateResume(){
+
+    document.getElementById("r_fullname").innerHTML =
+        document.getElementById("fullname").value;
+
+    document.getElementById("r_birth").innerHTML =
+        document.getElementById("birth").value;
+
+    document.getElementById("r_address").innerHTML =
+        document.getElementById("address").value;
+
+    document.getElementById("r_phone").innerHTML =
+        document.getElementById("phone").value;
+
+    document.getElementById("r_email").innerHTML =
+        document.getElementById("email").value;
+
+    document.getElementById("r_experience").innerHTML =
+        nl2br(document.getElementById("experience").value);
+
+    document.getElementById("r_education").innerHTML =
+        nl2br(document.getElementById("education").value);
+
+    document.getElementById("r_extraedu").innerHTML =
+        nl2br(document.getElementById("extraedu").value);
+
+    document.getElementById("r_skills").innerHTML =
+        nl2br(document.getElementById("skills").value);
+
+    document.getElementById("r_qualities").innerHTML =
+        nl2br(document.getElementById("qualities").value);
+}
+
+function downloadPDF(){
+
+    const element = document.getElementById("resume");
+
+    const options = {
+        margin: 0,
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        }
+    };
+
+    html2pdf().set(options).from(element).save();
+}
+
+updateResume();
+
+</script>
+
+</body>
+</html>
