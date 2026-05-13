@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume Builder</title>
+<title>Resume Builder</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -16,732 +16,38 @@
 }
 
 body{
-    background:#e9edf2;
-    font-family:Arial, sans-serif;
-    padding:20px;
-    color:#222;
-}
-
-.container{
-    max-width:1400px;
-    margin:auto;
-    display:flex;
-    gap:20px;
-    align-items:flex-start;
-}
-
-.panel{
-    width:360px;
-    background:white;
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    position:sticky;
-    top:20px;
-}
-
-.panel h2{
-    margin-bottom:20px;
-    font-size:24px;
-}
-
-.panel label{
-    font-size:13px;
-    font-weight:bold;
-    display:block;
-    margin-bottom:5px;
-    margin-top:14px;
-}
-
-.panel input,
-.panel textarea{
-    width:100%;
-    border:1px solid #d8dce3;
-    border-radius:8px;
-    padding:10px;
-    font-size:14px;
-    resize:vertical;
-    outline:none;
-}
-
-.panel textarea{
-    min-height:80px;
-}
-
-.buttons{
-    display:flex;
-    gap:10px;
-    margin-top:20px;
-}
-
-button{
-    flex:1;
-    border:none;
-    padding:13px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:bold;
-    transition:0.2s;
-}
-
-.generate{
-    background:#0f172a;
-    color:white;
-}
-
-.pdf{
-    background:#2563eb;
-    color:white;
-}
-
-button:hover{
-    transform:translateY(-2px);
-}
-
-.resume-wrapper{
-    flex:1;
-    display:flex;
-    justify-content:center;
-}
-
-.resume{
-    width:210mm;
-    min-height:297mm;
-    background:white;
-    padding:28px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.08);
-    overflow:hidden;
-}
-
-.top{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    border-bottom:3px solid #0f172a;
-    padding-bottom:18px;
-    margin-bottom:20px;
-}
-
-.left-top{
-    flex:1;
-}
-
-.name{
-    font-size:34px;
-    font-weight:800;
-    line-height:1.1;
-    color:#0f172a;
-    margin-bottom:10px;
-}
-
-.position{
-    font-size:18px;
-    color:#2563eb;
-    font-weight:bold;
-}
-
-.contacts{
-    text-align:right;
-    font-size:14px;
-    line-height:1.8;
-}
-
-.section{
-    margin-bottom:18px;
-}
-
-.section-title{
-    font-size:16px;
-    font-weight:800;
-    color:#0f172a;
-    margin-bottom:10px;
-    text-transform:uppercase;
-    border-left:5px solid #2563eb;
-    padding-left:10px;
-}
-
-.content{
-    font-size:14px;
-    line-height:1.5;
-    white-space:pre-line;
-}
-
-.two-col{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.skills-box{
-    background:#f4f7fb;
-    padding:12px;
-    border-radius:10px;
-}
-
-@media print{
-
-    body{
-        background:white;
-        padding:0;
-    }
-
-    .panel{
-        display:none;
-    }
-
-    .resume{
-        box-shadow:none;
-        margin:0;
-    }
-
-}
-
-</style>
-</head>
-<body>
-
-<div class="container">
-
-    <div class="panel">
-
-        <h2>Создание резюме</h2>
-
-        <label>ФИО</label>
-        <input type="text" id="fullname" placeholder="Введите ФИО">
-
-        <label>Желаемая должность</label>
-        <input type="text" id="position" placeholder="Например: Frontend Developer">
-
-        <label>Дата рождения</label>
-        <input type="text" id="birth" placeholder="15.04.2000">
-
-        <label>Адрес</label>
-        <input type="text" id="address" placeholder="г. Душанбе">
-
-        <label>Телефон</label>
-        <input type="text" id="phone" placeholder="+992 00 000 00 00">
-
-        <label>Email</label>
-        <input type="text" id="email" placeholder="mail@mail.com">
-
-        <label>Опыт работы</label>
-        <textarea id="experience" placeholder="Введите опыт работы"></textarea>
-
-        <label>Образование</label>
-        <textarea id="education" placeholder="Введите образование"></textarea>
-
-        <label>Дополнительное образование</label>
-        <textarea id="extraedu" placeholder="Введите дополнительные курсы"></textarea>
-
-        <label>Навыки</label>
-        <textarea id="skills" placeholder="Введите навыки"></textarea>
-
-        <label>Личные качества</label>
-        <textarea id="qualities" placeholder="Введите качества"></textarea>
-
-        <div class="buttons">
-            <button class="generate" onclick="generateResume()">
-                Обновить
-            </button>
-
-            <button class="pdf" onclick="downloadPDF()">
-                PDF
-            </button>
-        </div>
-
-    </div>
-
-    <div class="resume-wrapper">
-
-        <div class="resume" id="resume">
-
-            <div class="top">
-
-                <div class="left-top">
-                    <div class="name" id="r_name"></div>
-                    <div class="position" id="r_position"></div>
-                </div>
-
-                <div class="contacts">
-                    <div id="r_birth"></div>
-                    <div id="r_address"></div>
-                    <div id="r_phone"></div>
-                    <div id="r_email"></div>
-                </div>
-
-            </div>
-
-            <div class="section">
-                <div class="section-title">Опыт работы</div>
-                <div class="content" id="r_experience"></div>
-            </div>
-
-            <div class="two-col">
-
-                <div>
-
-                    <div class="section">
-                        <div class="section-title">Образование</div>
-                        <div class="content" id="r_education"></div>
-                    </div>
-
-                    <div class="section">
-                        <div class="section-title">Доп. образование</div>
-                        <div class="content" id="r_extraedu"></div>
-                    </div>
-
-                </div>
-
-                <div>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Resume Builder</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#edf1f5;
-    font-family:Arial, sans-serif;
-    padding:20px;
-    color:#1e293b;
-}
-
-.container{
-    display:flex;
-    gap:20px;
-    max-width:1600px;
-    margin:auto;
-    align-items:flex-start;
-}
-
-.panel{
-    width:360px;
-    background:white;
-    padding:20px;
-    border-radius:18px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.08);
-    position:sticky;
-    top:20px;
-}
-
-.panel h2{
-    margin-bottom:20px;
-    font-size:26px;
-}
-
-.panel label{
-    display:block;
-    margin-top:14px;
-    margin-bottom:5px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.panel input,
-.panel textarea{
-    width:100%;
-    border:1px solid #dbe2ea;
-    border-radius:10px;
-    padding:11px;
-    font-size:14px;
-    outline:none;
-}
-
-.panel textarea{
-    resize:vertical;
-    min-height:80px;
-}
-
-.buttons{
-    display:flex;
-    gap:10px;
-    margin-top:20px;
-}
-
-button{
-    flex:1;
-    border:none;
-    border-radius:10px;
-    padding:14px;
-    cursor:pointer;
-    font-weight:bold;
-    font-size:15px;
-    transition:0.2s;
-}
-
-.generate{
-    background:#0f172a;
-    color:white;
-}
-
-.pdf{
-    background:#2563eb;
-    color:white;
-}
-
-button:hover{
-    transform:translateY(-2px);
-}
-
-.resume-wrapper{
-    flex:1;
-    display:flex;
-    justify-content:center;
-}
-
-.resume{
-    width:210mm;
-    min-height:297mm;
-    background:white;
-    display:grid;
-    grid-template-columns:290px 1fr;
-    overflow:hidden;
-    box-shadow:0 10px 50px rgba(0,0,0,0.08);
-}
-
-.sidebar{
-    background:#0f172a;
-    color:white;
-    padding:30px 24px;
-}
-
-.photo{
-    width:170px;
-    height:170px;
-    border-radius:18px;
-    overflow:hidden;
-    margin:auto;
-    margin-bottom:25px;
-    background:#1e293b;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.name{
-    font-size:28px;
-    font-weight:800;
-    line-height:1.2;
-    text-align:center;
-    margin-bottom:10px;
-}
-
-.position{
-    text-align:center;
-    color:#93c5fd;
-    font-size:15px;
-    margin-bottom:25px;
-}
-
-.side-section{
-    margin-bottom:24px;
-}
-
-.side-title{
-    font-size:14px;
-    font-weight:800;
-    margin-bottom:10px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    border-bottom:1px solid rgba(255,255,255,0.15);
-    padding-bottom:6px;
-}
-
-.side-content{
-    font-size:13px;
-    line-height:1.7;
-    white-space:pre-line;
-}
-
-.main{
-    padding:35px;
-}
-
-.section{
-    margin-bottom:24px;
-}
-
-.section-title{
-    font-size:18px;
-    font-weight:800;
-    margin-bottom:12px;
-    color:#0f172a;
-    border-left:5px solid #2563eb;
-    padding-left:10px;
-}
-
-.content{
-    font-size:14px;
-    line-height:1.7;
-    white-space:pre-line;
-}
-
-.language-item{
-    margin-bottom:8px;
-}
-
-.language-bar{
-    width:100%;
-    height:7px;
-    background:#dbe2ea;
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:4px;
-}
-
-.language-fill{
-    height:100%;
-    background:#60a5fa;
-}
-
-@media print{
-
-    body{
-        background:white;
-        padding:0;
-    }
-
-    .panel{
-        display:none;
-    }
-
-    .resume{
-        box-shadow:none;
-    }
-
-}
-
-</style>
-</head>
-<body>
-
-<div class="container">
-
-    <div class="panel">
-
-        <h2>Конструктор резюме</h2>
-
-        <label>Фото</label>
-        <input type="file" id="photoInput" accept="image/*">
-
-        <label>ФИО</label>
-        <input type="text" id="fullname">
-
-        <label>Должность</label>
-        <input type="text" id="position">
-
-        <label>Дата рождения</label>
-        <input type="text" id="birth">
-
-        <label>Адрес</label>
-        <input type="text" id="address">
-
-        <label>Телефон</label>
-        <input type="text" id="phone">
-
-        <label>Email</label>
-        <input type="text" id="email">
-
-        <label>Опыт работы</label>
-        <textarea id="experience"></textarea>
-
-        <label>Образование</label>
-        <textarea id="education"></textarea>
-
-        <label>Дополнительное образование</label>
-        <textarea id="extraedu"></textarea>
-
-        <label>Навыки</label>
-        <textarea id="skills"></textarea>
-
-        <label>Языки</label>
-        <textarea id="languages" placeholder="Русский — 100%
-Английский — 70%
-Таджикский — 95%"></textarea>
-
-        <label>Личные качества</label>
-        <textarea id="qualities"></textarea>
-
-        <div class="buttons">
-            <button class="generate" onclick="generateResume()">
-                Обновить
-            </button>
-
-            <button class="pdf" onclick="downloadPDF()">
-                Скачать PDF
-            </button>
-        </div>
-
-    </div>
-
-    <div class="resume-wrapper">
-
-        <div class="resume" id="resume">
-
-            <div class="sidebar">
-
-                <div class="photo">
-                    <img id="previewPhoto">
-                </div>
-
-                <div class="name" id="r_name"></div>
-
-                <div class="position" id="r_position"></div>
-
-                <div class="side-section">
-                    <div class="side-title">Контакты</div>
-
-                    <div class="side-content">
-                        <div id="r_birth"></div>
-                        <div id="r_address"></div>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium A4 Resume</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#e8edf3;
+    background:#dfe5ec;
     font-family:Arial,sans-serif;
-    padding:20px;
-}
-
-.container{
-    display:flex;
-    gap:20px;
-    max-width:1600px;
-    margin:auto;
-    align-items:flex-start;
-}
-
-.panel{
-    width:340px;
-    background:white;
-    padding:20px;
-    border-radius:18px;
-    box-shadow:0 10px 35px rgba(0,0,0,0.08);
-    position:sticky;
-    top:20px;
-}
-
-.panel h2{
-    margin-bottom:18px;
-    font-size:25px;
-}
-
-.panel label{
-    display:block;
-    margin-top:12px;
-    margin-bottom:5px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.panel input,
-.panel textarea{
-    width:100%;
-    border:1px solid #d9e0e7;
-    border-radius:10px;
-    padding:10px;
-    font-size:13px;
-    outline:none;
-}
-
-.panel textarea{
-    resize:vertical;
-    min-height:70px;
-}
-
-.buttons{
-    display:flex;
-    gap:10px;
-    margin-top:20px;
-}
-
-button{
-    flex:1;
-    border:none;
-    padding:13px;
-    border-radius:10px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.generate{
-    background:#111827;
-    color:white;
-}
-
-.pdf{
-    background:#2563eb;
-    color:white;
-}
-
-.resume-wrapper{
-    flex:1;
-    display:flex;
-    justify-content:center;
+    padding:30px;
 }
 
 .resume{
     width:210mm;
-    height:297mm;
+    min-height:297mm;
     background:white;
-    padding:18mm;
+    margin:auto;
     display:grid;
     grid-template-columns:260px 1fr;
-    gap:18px;
     overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,0.08);
+    box-shadow:0 15px 50px rgba(0,0,0,0.1);
 }
 
 .left{
     background:#111827;
     color:white;
-    border-radius:18px;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
+    padding:25px;
 }
 
 .photo{
-    width:120px;
-    height:120px;
-    border-radius:18px;
+    width:130px;
+    height:130px;
+    border-radius:20px;
     overflow:hidden;
-    margin:auto;
-    margin-bottom:15px;
     background:#1f2937;
+    margin:auto;
+    margin-bottom:18px;
+    cursor:pointer;
+    position:relative;
 }
 
 .photo img{
@@ -750,50 +56,119 @@ button{
     object-fit:cover;
 }
 
+.photo::after{
+    content:"Фото";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,0.45);
+    opacity:0;
+    transition:0.2s;
+    font-size:13px;
+}
+
+.photo:hover::after{
+    opacity:1;
+}
+
 .name{
+    width:100%;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:white;
     font-size:24px;
     font-weight:800;
     text-align:center;
     line-height:1.2;
+    margin-bottom:8px;
 }
 
 .position{
-    text-align:center;
-    margin-top:6px;
+    width:100%;
+    background:transparent;
+    border:none;
+    outline:none;
     color:#93c5fd;
-    font-size:13px;
-    margin-bottom:18px;
+    text-align:center;
+    font-size:14px;
+    margin-bottom:25px;
 }
 
-.side-block{
-    margin-bottom:18px;
+.block{
+    margin-bottom:20px;
 }
 
-.side-title{
+.title{
     font-size:12px;
     text-transform:uppercase;
     font-weight:800;
-    margin-bottom:8px;
-    letter-spacing:1px;
     color:#93c5fd;
+    margin-bottom:8px;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+    padding-bottom:5px;
+    letter-spacing:1px;
 }
 
-.side-text{
+.left textarea,
+.left input{
+    width:100%;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:white;
+    resize:none;
     font-size:11px;
     line-height:1.6;
-    white-space:pre-line;
 }
 
-.lang{
-    margin-bottom:8px;
+.right{
+    padding:30px;
 }
 
-.lang-name{
+.section{
+    margin-bottom:22px;
+}
+
+.section-title{
+    font-size:15px;
+    font-weight:800;
+    color:#111827;
+    border-bottom:2px solid #e5e7eb;
+    padding-bottom:6px;
+    margin-bottom:10px;
+    text-transform:uppercase;
+}
+
+.right textarea{
+    width:100%;
+    border:none;
+    outline:none;
+    resize:none;
+    font-size:11px;
+    line-height:1.6;
+    color:#1f2937;
+}
+
+.languages{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.lang input{
+    width:100%;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:white;
     font-size:11px;
     margin-bottom:4px;
 }
 
-.lang-bar{
+.bar{
     width:100%;
     height:5px;
     background:#374151;
@@ -801,37 +176,36 @@ button{
     overflow:hidden;
 }
 
-.lang-fill{
+.fill{
     height:100%;
     background:#60a5fa;
 }
 
-.right{
-    overflow:hidden;
+.controls{
+    width:210mm;
+    margin:auto;
+    margin-top:15px;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
 }
 
-.section{
-    margin-bottom:14px;
+button{
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.section-title{
-    font-size:15px;
-    font-weight:800;
-    margin-bottom:7px;
-    color:#111827;
-    border-bottom:2px solid #dbe4ee;
-    padding-bottom:5px;
+.add{
+    background:#111827;
+    color:white;
 }
 
-.section-content{
-    font-size:11px;
-    line-height:1.55;
-    white-space:pre-line;
-    color:#1f2937;
-}
-
-.compact{
-    line-height:1.45;
+.pdf{
+    background:#2563eb;
+    color:white;
 }
 
 @media print{
@@ -841,7 +215,7 @@ button{
         padding:0;
     }
 
-    .panel{
+    .controls{
         display:none;
     }
 
@@ -855,172 +229,146 @@ button{
 </head>
 <body>
 
-<div class="container">
+<div class="resume" id="resume">
 
-    <div class="panel">
+    <div class="left">
 
-        <h2>Резюме</h2>
+        <label class="photo">
+            <img id="photoPreview">
+            <input type="file"
+                   id="photoInput"
+                   accept="image/*"
+                   hidden>
+        </label>
 
-        <label>Фото</label>
-        <input type="file" id="photoInput" accept="image/*">
+        <input class="name"
+               placeholder="ФИО">
 
-        <label>ФИО</label>
-        <input type="text" id="fullname">
+        <input class="position"
+               placeholder="Должность">
 
-        <label>Должность</label>
-        <input type="text" id="position">
+        <div class="block">
 
-        <label>Дата рождения</label>
-        <input type="text" id="birth">
+            <div class="title">
+                Контакты
+            </div>
 
-        <label>Адрес</label>
-        <input type="text" id="address">
+            <textarea rows="6"
+placeholder="Дата рождения
+Адрес
+Телефон
+Email"></textarea>
 
-        <label>Телефон</label>
-        <input type="text" id="phone">
+        </div>
 
-        <label>Email</label>
-        <input type="text" id="email">
+        <div class="block">
 
-        <label>Опыт работы</label>
-        <textarea id="experience"></textarea>
+            <div class="title">
+                Навыки
+            </div>
 
-        <label>Образование</label>
-        <textarea id="education"></textarea>
+            <textarea rows="7"
+placeholder="HTML
+CSS
+JavaScript
+Photoshop"></textarea>
 
-        <label>Доп. образование</label>
-        <textarea id="extraedu"></textarea>
+        </div>
 
-        <label>Навыки</label>
-        <textarea id="skills"></textarea>
+        <div class="block">
 
-        <label>Языки</label>
-        <textarea id="languages"
-placeholder="Русский — 100%
-Английский — 70%"></textarea>
+            <div class="title">
+                Языки
+            </div>
 
-        <label>Личные качества</label>
-        <textarea id="qualities"></textarea>
+            <div class="languages" id="languages">
 
-        <div class="buttons">
-            <button class="generate"
-onclick="generateResume()">
-                Обновить
-            </button>
+                <div class="lang">
 
-            <button class="pdf"
+                    <input placeholder="Русский — 100">
+
+                    <div class="bar">
+                        <div class="fill"
+style="width:100%"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="block">
+
+            <div class="title">
+                Качества
+            </div>
+
+            <textarea rows="5"
+placeholder="Ответственность
+Коммуникабельность"></textarea>
+
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="section">
+
+            <div class="section-title">
+                Опыт работы
+            </div>
+
+            <textarea rows="18"
+placeholder="2020 — 2025
+Компания
+Должность
+
+Обязанности..."></textarea>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                Образование
+            </div>
+
+            <textarea rows="7"
+placeholder="2015 — 2020
+Университет
+Специальность"></textarea>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                Дополнительное образование
+            </div>
+
+            <textarea rows="5"
+placeholder="Курсы
+Сертификаты"></textarea>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="controls">
+
+    <button class="add"
+onclick="addLanguage()">
+        + Язык
+    </button>
+
+    <button class="pdf"
 onclick="downloadPDF()">
-                PDF
-            </button>
-        </div>
-
-    </div>
-
-    <div class="resume-wrapper">
-
-        <div class="resume" id="resume">
-
-            <div class="left">
-
-                <div class="photo">
-                    <img id="previewPhoto">
-                </div>
-
-                <div class="name"
-id="r_name"></div>
-
-                <div class="position"
-id="r_position"></div>
-
-                <div class="side-block">
-
-                    <div class="side-title">
-                        Контакты
-                    </div>
-
-                    <div class="side-text">
-                        <div id="r_birth"></div>
-                        <div id="r_address"></div>
-                        <div id="r_phone"></div>
-                        <div id="r_email"></div>
-                    </div>
-
-                </div>
-
-                <div class="side-block">
-
-                    <div class="side-title">
-                        Навыки
-                    </div>
-
-                    <div class="side-text"
-id="r_skills"></div>
-
-                </div>
-
-                <div class="side-block">
-
-                    <div class="side-title">
-                        Языки
-                    </div>
-
-                    <div id="languageContainer"></div>
-
-                </div>
-
-                <div class="side-block">
-
-                    <div class="side-title">
-                        Качества
-                    </div>
-
-                    <div class="side-text"
-id="r_qualities"></div>
-
-                </div>
-
-            </div>
-
-            <div class="right">
-
-                <div class="section">
-
-                    <div class="section-title">
-                        Опыт работы
-                    </div>
-
-                    <div class="section-content compact"
-id="r_experience"></div>
-
-                </div>
-
-                <div class="section">
-
-                    <div class="section-title">
-                        Образование
-                    </div>
-
-                    <div class="section-content"
-id="r_education"></div>
-
-                </div>
-
-                <div class="section">
-
-                    <div class="section-title">
-                        Дополнительное образование
-                    </div>
-
-                    <div class="section-content"
-id="r_extraedu"></div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+        Скачать PDF
+    </button>
 
 </div>
 
@@ -1037,112 +385,69 @@ document.getElementById('photoInput')
 
         reader.onload = function(event){
 
-            document.getElementById('previewPhoto')
+            document.getElementById('photoPreview')
             .src = event.target.result;
 
         }
 
         reader.readAsDataURL(file);
+
     }
 
 });
 
-function generateResume(){
-
-    document.getElementById('r_name').innerText =
-        document.getElementById('fullname').value;
-
-    document.getElementById('r_position').innerText =
-        document.getElementById('position').value;
-
-    document.getElementById('r_birth').innerText =
-        "Дата рождения: " +
-        document.getElementById('birth').value;
-
-    document.getElementById('r_address').innerText =
-        "Адрес: " +
-        document.getElementById('address').value;
-
-    document.getElementById('r_phone').innerText =
-        "Телефон: " +
-        document.getElementById('phone').value;
-
-    document.getElementById('r_email').innerText =
-        "Email: " +
-        document.getElementById('email').value;
-
-    document.getElementById('r_experience').innerText =
-        document.getElementById('experience').value;
-
-    document.getElementById('r_education').innerText =
-        document.getElementById('education').value;
-
-    document.getElementById('r_extraedu').innerText =
-        document.getElementById('extraedu').value;
-
-    document.getElementById('r_skills').innerText =
-        document.getElementById('skills').value;
-
-    document.getElementById('r_qualities').innerText =
-        document.getElementById('qualities').value;
-
-    generateLanguages();
-}
-
-function generateLanguages(){
+function addLanguage(){
 
     const container =
-        document.getElementById('languageContainer');
+        document.getElementById('languages');
 
-    container.innerHTML = '';
+    const div =
+        document.createElement('div');
 
-    const lines =
-        document.getElementById('languages')
-        .value
-        .split('\n');
+    div.className = 'lang';
 
-    lines.forEach(line => {
+    div.innerHTML = `
 
-        if(line.trim() !== ''){
+        <input placeholder="Английский — 70"
+        oninput="updateBar(this)">
 
-            const parts = line.split('—');
+        <div class="bar">
+            <div class="fill"
+            style="width:70%"></div>
+        </div>
 
-            if(parts.length >= 2){
+    `;
 
-                const lang =
-                    parts[0].trim();
+    container.appendChild(div);
 
-                const percent =
-                    parseInt(parts[1]);
+}
 
-                const div =
-                    document.createElement('div');
+function updateBar(input){
 
-                div.className = 'lang';
+    const value =
+        parseInt(input.value.match(/\d+/));
 
-                div.innerHTML = `
+    if(!isNaN(value)){
 
-                    <div class="lang-name">
-                        ${lang}
-                    </div>
+        input.parentElement
+        .querySelector('.fill')
+        .style.width = value + '%';
 
-                    <div class="lang-bar">
-                        <div class="lang-fill"
-                        style="width:${percent}%">
-                        </div>
-                    </div>
+    }
 
-                `;
+}
 
-                container.appendChild(div);
+document.querySelectorAll('.lang input')
+.forEach(input => {
 
-            }
+    input.addEventListener('input',
+    function(){
 
-        }
+        updateBar(this);
 
     });
 
-}
+});
 
 function downloadPDF(){
 
@@ -1176,6 +481,7 @@ function downloadPDF(){
         .set(options)
         .from(element)
         .save();
+
 }
 
 </script>
